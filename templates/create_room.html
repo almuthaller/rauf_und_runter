@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}New game{% endblock %}
+
+{% block content %}
+<p class="text">To join an existing game, please ask your friends for a game link.</p>
+<p class="text">Otherwise, you can make a brand new one right here:</p>
+<p>
+    <a href="/create_rauf">
+        <button id="game_button">Rauf</button>
+    </a>
+    <span id="description">In a "Rauf" game you will play rounds 1 through 16 with an increasing number of cards
+        for each round.</span>
+</p>
+<p>
+    <a href="/create_runter">
+        <button id="game_button">Runter</button>
+    </a>
+    <span id="description">In a "Runter" game you start with 16 cards, your card hand decreasing with each
+        round.</span>
+</p>
+{% endblock %}

@@ -1,0 +1,56 @@
+<html>
+
+<head>
+    <script>
+        window.onload = function (e) {
+            fetch("{{ changes_url }}").then(function (response) {
+                response.json().then(function (initial_count) {
+                    setInterval(function () {
+                        fetch("{{ changes_url }}").then(function (response) {
+                            response.json().then(function (new_count) {
+                                if (initial_count !== new_count) {
+                                    location.reload()
+                                }
+                            })
+                        })
+                    }, 1000)
+                })
+            })
+        }
+    </script>
+
+</head>
+
+<body>
+    {% load static %}
+    <h1 style="color:#006600">Waiting for other players to join your room...</h1>
+    <p>Send this invite link to your friends:</p>
+
+    <input type="text" value="{{link}}" id="link" size="30" style="font-size: 16px">
+    <button onclick="CopyLink()" style="font-size: 16px">Copy
+        to clipboard</button>
+
+    {% block scripts %}
+    <script>
+        function CopyLink() {
+            var text = document.getElementById("link")
+            text.select();
+            document.execCommand("copy")
+        }
+    </script>
+    {% endblock scripts %}
+
+    <p>There are currently <b style="color:#006600">{{no_of_players}}</b>/4 players in this
+        room:</p>
+    <ul style="color:#006600">
+        {% for p in players %}
+        <li style="font-size: 18px;">{{p.user.username}}</li>
+        {% endfor %}
+    </ul>
+
+    <p style="font-size: small;">I thought you might want to look at this happy family while you wait.</p>
+    <img src={% static "images/family_pic.jpg" %} alt="happy family">
+
+</body>
+
+</html>

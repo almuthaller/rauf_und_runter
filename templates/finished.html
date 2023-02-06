@@ -1,0 +1,25 @@
+<html>
+
+<head>
+    {% load static %}
+</head>
+
+<body>
+    <h1 style="color:#006600; font-size: 50">{{winner}} is the winner!</h1>
+    <img src={% static "images/excited_anna.jpg" %} alt="excited anna" style="width: 70%">
+    <h2 style="color: #006600">Here is the final score:</h2>
+    <table style="width: 40%; font-size: large; position: absolute; left: 0">
+        <tr>
+            {% for p in scores %}
+            <th style="text-align: center">{{p.0}}</th>
+            {% endfor %}
+        </tr>
+        <tr>
+            {% for p in scores %}
+            <td style="text-align: center">{{p.1}}</td>
+            {% endfor %}
+        </tr>
+    </table>
+</body>
+
+</html>

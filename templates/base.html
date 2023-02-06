@@ -1,0 +1,18 @@
+<html>
+
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/set_up_game.css' %}">
+</head>
+
+<body>
+    <div id="title">
+        {% block title %}{% endblock %}
+    </div>
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+    <img src={% static "images/welcome.jpg" %} alt="waving olaf">
+</body>
+
+</html>

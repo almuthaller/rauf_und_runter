@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rauf und Runter</title>
+    <script>
+        window.onload = function (e) {
+            fetch("{{ changes_url }}").then(function (response) {
+                response.json().then(function (initial_count) {
+                    setInterval(function () {
+                        fetch("{{ changes_url }}").then(function (response) {
+                            response.json().then(function (new_count) {
+                                if (initial_count !== new_count) {
+                                    location.reload()
+                                }
+                            })
+                        })
+                    }, 1000)
+                })
+            })
+        }
+
+
+        function play_card(card_index) {
+            document.getElementById("card_index_field").setAttribute("value", card_index)
+            document.getElementById("play_card_form").submit()
+        }
+    </script>
+</head>
+
+<body>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+    <div id="game_info">
+        <span id="game_name">Rauf und Runter</span>
+        <span id="round">Round {{ round }}</span>
+        <span id="tricks_total">Bidden tricks: {{tricks_total}}</span>
+        <span id="score">
+            <table id="score_table">
+                <tr>
+                    {% for player in scores %}
+                    <th> {{ player.0 }} </th>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    {% for player in scores %}
+                    <td> {{ player.1 }} </td>
+                    {% endfor %}
+                </tr>
+            </table>
+        </span>
+    </div>
+
+    <div id="game_view">
+        {% if pile|length > 0 %}
+        <div id="pile">
+            {% for card in pile %}
+            <div class="pile_card">
+                {% if card %}
+                <img src="{% static card.0 %}" class="pile_card">
+                <p class="pile_player"> {{ card.1 }} </p>
+                {% else %}
+                <p class="empty">
+                    {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if show_clean_table %}
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" hidden>
+            <input id="clean_table" type="submit" value="Get my trick">
+        </form>
+        {% endif %}
+        {% if pile|length == 4 and not show_clean_table %}
+        <p class="trick_winner">Waiting for {{trick_winner}} to grab their trick.</p>
+        {% endif %}
+
+        <div class="player_info {{ players.0.1 }}" id="left">
+            <img class="avatar" src="{% static players.0.4 %}">
+            <p class="username"> {{ players.0.0 }} </p>
+            {% if players.0.3 is not None %}
+            <p class="tricks"> Tricks: {% if show_tricks_won %}{{ players.0.2 }}/{% endif %}{{ players.0.3 }}</p>
+            {% endif %}
+        </div>
+        <div class="player_info {{ players.1.1 }}" id="top">
+            <img class="avatar" src="{% static players.1.4 %}">
+            <p class="username"> {{ players.1.0 }} </p>
+            {% if players.1.3 is not None %}
+            <p class="tricks"> Tricks: {% if show_tricks_won %}{{ players.1.2 }}/{% endif %}{{ players.1.3 }}</p>
+            {% endif %}
+        </div>
+        <div class="player_info {{ players.2.1 }}" id="right">
+            <img class="avatar" src="{% static players.2.4 %}">
+            <p class="username"> {{ players.2.0 }} </p>
+            {% if players.2.3 is not None %}
+            <p class="tricks"> Tricks: {% if show_tricks_won %}{{ players.2.2 }}/{% endif %}{{ players.2.3 }}</p>
+            {% endif %}
+        </div>
+        <div class="player_info {{ players.3.1 }}" id="bottom">
+            <img class="avatar" src="{% static players.3.4 %}">
+            <p class="username"> {{ players.3.0 }} </p>
+            {% if players.3.3 is not None %}
+            <p class="tricks"> Tricks: {% if show_tricks_won %}{{ players.3.2 }}/{% endif %}{{ players.3.3 }}</p>
+            {% endif %}
+        </div>
+        <div id="hand">
+            {% for card in hand %}
+            <img src="{% static card %}" class="hand_card" {% if show_card_input %}
+                onclick="play_card({{forloop.counter0}})" {% endif %}>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div>
+        <div id="input">
+            {% if show_bet_input %}
+            <form name="place_bet_form" method="POST">
+                {% csrf_token %}
+                <input type="number" name="bet" placeholder="Place your bet" min="0" max={{round}} />
+                <input type="submit" value="Submit">
+            </form>
+            {% endif %}
+        </div>
+        <div id="input">
+            {% if show_card_input %}
+            {% if pile|length < 4 %} <p>Your turn to play a card!</p>
+                {% endif %}
+                <form id="play_card_form" name="play_card_form" method="POST" hidden>
+                    {% csrf_token %}
+                    <input id="card_index_field" type="number" name="card" placeholder="Play a card" min="0"
+                        max={{hand|length|add:"-1"}} />
+                    <input type="submit" value="Submit">
+                </form>
+                {% endif %}
+        </div>
+        <div id="warning">
+            {% if warning %}
+            <p>{{warning}}</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to Rauf und Runter!{% endblock %}
+
+{% block content %}
+<p class="text">To play, please log in or create a new account.</p>
+<a href="/signin">
+    <button>Log in to existing account</button>
+</a>
+<p>
+    <a href="/register">
+        <button>Create a new account</button>
+    </a>
+</p>
+{% endblock %}

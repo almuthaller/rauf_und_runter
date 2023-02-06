@@ -1,0 +1,49 @@
+div#title {
+    position: fixed;
+    color: #006600;
+    font-size: 2em;
+    font-weight: bold
+}
+
+div#content {
+    position: absolute;
+    top: 50px
+}
+
+img {
+    height: 70%;
+    position: absolute;
+    right: 15px;
+    bottom: 15px
+}
+
+button {
+    color: #006600;
+    font-size: 15px;
+}
+
+p.text {
+    font-size: large;
+}
+
+p.hint {
+    font-size: small;
+    color: #006600
+}
+
+ul#warning {
+    list-style-type: circle;
+    font-size: 15px;
+    color: #dc143c
+}
+
+span#description {
+    font-size: 13px;
+    position: absolute;
+    left: 80px
+}
+
+button#game_button {
+    position: relative;
+    font-size: 18px;
+}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Log in{% endblock %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <p>Username:</p>
+    <input type="text" name="username">
+    <p>Password:</p>
+    <input type="text" name="password">
+    <p></p>
+    <button type="submit">Log in</button>
+</form>
+<ul id="warning">
+    {% for field, error in form.errors.items %}
+    <li>{{ error|striptags }}</li>
+    {% endfor %}
+</ul>
+<p class="hint">New user? Create an account first.</p>
+<a href="/register">
+    <button>New account</button>
+</a>
+{% endblock %}
