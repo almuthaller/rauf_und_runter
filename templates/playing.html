@@ -32,10 +32,10 @@
 
 <body>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/playing.css' %}">
 
     <div id="game_info">
-        <span id="game_name">Rauf und Runter</span>
+        <span id="game_name">{{ title}}</span>
         <span id="round">Round {{ round }}</span>
         <span id="tricks_total">Bidden tricks: {{tricks_total}}</span>
         <span id="score">

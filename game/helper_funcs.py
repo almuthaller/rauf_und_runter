@@ -170,6 +170,7 @@ def render_game(request, room, player, warning):
     pile = [(card.image(), card.owned_by.user.username) for card in pile]
 
     context = {
+        "title": room.game.capitalize(),
         "round": room.round_no,
         "tricks_total": tricks_total,
         "place_bet_form": PlaceBet,
