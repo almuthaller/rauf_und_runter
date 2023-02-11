@@ -1,3 +1,4 @@
+import os
 from random import choice
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -150,7 +151,7 @@ def game(request):
             request,
             "waiting.html",
             {
-                "link": "http://94.255.201.217:28000/game?room_id=" + str(room.room_id),
+                "link": f"http://{os.environ.get('PUBLIC_IP')}:28000/game?room_id={str(room.room_id)}",
                 "no_of_players": len(room.players()),
                 "players": room.players(),
                 "changes_url": "changes?room_id=" + room.room_id,
