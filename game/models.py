@@ -4,7 +4,7 @@ from django.db import models
 
 class Room(models.Model):
     room_id = models.SlugField(primary_key=True, editable=False, unique=True)
-    game = models.CharField(max_length=5, default=None, null=True)
+    game = models.CharField(max_length=6, default=None, null=True)
     round_no = models.PositiveIntegerField(default=1)
     current_player = models.PositiveIntegerField(null=True)
     changes = models.PositiveIntegerField(default=0)

@@ -18,8 +18,12 @@ def deal(room):
             card = Card(suit=suit, rank=rank, owned_by=player, room=room)
             card.save()
 
-    room.current_player = room.players()[room.round_no % 4 - 1].id
-    room.save()
+    if room.game == "rauf":
+        room.current_player = room.players()[room.round_no % 4 - 1].id
+        room.save()
+    elif room.game == "runter":
+        room.current_player = room.players()[-(room.round_no % 4)].id
+        room.save()
 
 
 def next_player(room):
@@ -123,11 +127,17 @@ def end_round(room):
         player.tricks_won = 0
         player.save()
 
-    room.round_no += 1
-    room.save()
+    if room.game == "rauf":
+        room.round_no += 1
+        room.save()
+        if room.round_no <= 16:
+            deal(room)
 
-    if room.round_no <= 16:
-        deal(room)
+    elif room.game == "runter":
+        room.round_no -= 1
+        room.save()
+        if room.round_no >= 1:
+            deal(room)
 
 
 def render_game(request, room, player, warning):
